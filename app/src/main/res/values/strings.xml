@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Food Recipe</string>
+    <string name="api_key">89800085d6b246dea2911971ce16c875</string>
 </resources>
