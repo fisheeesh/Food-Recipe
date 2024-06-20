@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), Presenter {
              */
 //            layoutRecipesBinding = LayoutRecipesBinding.bind(view)
 //            layoutRecipesBinding.textViewDishName.text = data.title
+//            we need to control it to make it marquee with isSelected = true
 //            layoutRecipesBinding.textViewDishName.isSelected = true
 //            layoutRecipesBinding.person.text = "${data.servings} Servings"
 //            layoutRecipesBinding.likes.text = "${data.aggregateLikes} Likes"
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity(), Presenter {
              */
             recipesBinding = RecipesBinding.bind(view)
             recipesBinding.dishName.text = data.title
+            //we need to control it to make it marquee with isSelected = true
             recipesBinding.dishName.isSelected = true
             recipesBinding.person.text = "${data.servings} Servings"
             recipesBinding.like.text = "${data.aggregateLikes} Likes"
