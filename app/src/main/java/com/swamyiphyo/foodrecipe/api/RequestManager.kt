@@ -1,7 +1,7 @@
 package com.swamyiphyo.foodrecipe.api
 
 import android.content.Context
-import com.swamyiphyo.foodrecipe.Presenter
+import android.util.Log
 import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.model.Recipe
 import com.swamyiphyo.foodrecipe.model.Root
@@ -25,19 +25,22 @@ class RequestManager private constructor(){
             return requestManager
         }
     }
-    private fun getRndRecipe(context : Context, obj : Presenter){
+    fun getRndRecipe(context : Context, obj : Presenter){
         val api = ApiClient.apiService.getRndRecipe(context.getString(R.string.api_key), "11")
         api.enqueue(object : Callback<Root> {
             override fun onResponse(p0: Call<Root>, p1: Response<Root>) {
                 if(p1.isSuccessful){
                     val data = p1.body()
                     val objList = data?.recipes as ArrayList<Recipe>
-
+                    obj.setUpUI(objList)
+                }
+                else{
+                    Log.d("TAG", "onResponse: ${p1.errorBody()}")
                 }
             }
 
             override fun onFailure(p0: Call<Root>, p1: Throwable) {
-                TODO("Not yet implemented")
+                Log.d("TAG", "onFailure: ${p1.message}")
             }
 
         })
