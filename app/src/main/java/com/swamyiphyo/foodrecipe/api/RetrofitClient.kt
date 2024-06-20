@@ -13,6 +13,11 @@ object RetrofitClient{
             .build()
     }
 }
+
+/**
+ * This class will help Request Manager for calling methods from ApiService with its instance
+ * which is created by using Retrofit
+ */
 object ApiClient{
     val apiService : ApiService by lazy {
         RetrofitClient.retrofit.create(ApiService::class.java)
