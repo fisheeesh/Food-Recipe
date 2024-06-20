@@ -13,11 +13,13 @@ import com.swamyiphyo.foodrecipe.api.Presenter
 import com.swamyiphyo.foodrecipe.api.RequestManager
 import com.swamyiphyo.foodrecipe.databinding.ActivityMainBinding
 import com.swamyiphyo.foodrecipe.databinding.LayoutRecipesBinding
+import com.swamyiphyo.foodrecipe.databinding.RecipesBinding
 import com.swamyiphyo.foodrecipe.model.Recipe
 
 class MainActivity : AppCompatActivity(), Presenter {
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
+    private lateinit var recipesBinding: RecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,19 +34,35 @@ class MainActivity : AppCompatActivity(), Presenter {
     override fun setUpUI(objList: ArrayList<Recipe>) {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        BaseAdapter(R.layout.layout_recipes, objList, false){
+        BaseAdapter(R.layout.recipes, objList, false){
             _, data, view ->
 
-            layoutRecipesBinding = LayoutRecipesBinding.bind(view)
+            /**
+             * with layout_recipes
+             */
+//            layoutRecipesBinding = LayoutRecipesBinding.bind(view)
+//            layoutRecipesBinding.textViewDishName.text = data.title
+//            layoutRecipesBinding.textViewDishName.isSelected = true
+//            layoutRecipesBinding.person.text = "${data.servings} Servings"
+//            layoutRecipesBinding.likes.text = "${data.aggregateLikes} Likes"
+//            layoutRecipesBinding.duration.text = "${data.readyInMinutes} Minutes"
+//            Picasso.get()
+//                .load(data.image)
+//                .into(layoutRecipesBinding.dishImage)
 
-            layoutRecipesBinding.textViewDishName.text = data.title
-            layoutRecipesBinding.textViewDishName.isSelected = true
-            layoutRecipesBinding.person.text = "${data.servings} Servings"
-            layoutRecipesBinding.likes.text = "${data.aggregateLikes} Likes"
-            layoutRecipesBinding.duration.text = "${data.readyInMinutes} Minutes"
+            /**
+             * with recipes
+             */
+            recipesBinding = RecipesBinding.bind(view)
+            recipesBinding.dishName.text = data.title
+            recipesBinding.dishName.isSelected = true
+            recipesBinding.person.text = "${data.servings} Servings"
+            recipesBinding.like.text = "${data.aggregateLikes} Likes"
+            recipesBinding.time.text = "${data.readyInMinutes} Minutes"
             Picasso.get()
                 .load(data.image)
-                .into(layoutRecipesBinding.dishImage)
+                .into(recipesBinding.imageView)
+
         }.also { mainAdapter = it }
 
         activityMainBinding.mainRV.apply {
