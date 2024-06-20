@@ -4,6 +4,10 @@ plugins {
 }
 
 android {
+
+    buildFeatures {
+        viewBinding = true
+    }
     namespace = "com.swamyiphyo.foodrecipe"
     compileSdk = 34
 
@@ -42,7 +46,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.converter.gson)
+    implementation(libs.retrofit)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation ("com.squareup.picasso:picasso:2.8")
 }
