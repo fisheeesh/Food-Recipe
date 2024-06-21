@@ -8,6 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.swamyiphyo.foodrecipe.R
+import com.swamyiphyo.foodrecipe.Utils.gone
+import com.swamyiphyo.foodrecipe.Utils.visible
 import com.swamyiphyo.foodrecipe.adapter.BaseAdapter
 import com.swamyiphyo.foodrecipe.api.Presenter
 import com.swamyiphyo.foodrecipe.api.RequestManager
@@ -31,39 +33,48 @@ class MainActivity : AppCompatActivity(), Presenter {
 
         RequestManager.getInstance().getRndRecipe(this, this)
     }
+
+    override fun showProgress() {
+        activityMainBinding.loading.visible()
+    }
+
+    override fun hideProgress() {
+        activityMainBinding.loading.gone()
+    }
+
     override fun setUpUI(objList: ArrayList<Recipe>) {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        BaseAdapter(R.layout.recipes, objList, false){
+        BaseAdapter(R.layout.layout_recipes, objList, false){
             _, data, view ->
 
             /**
              * with layout_recipes
              */
-//            layoutRecipesBinding = LayoutRecipesBinding.bind(view)
-//            layoutRecipesBinding.textViewDishName.text = data.title
+            layoutRecipesBinding = LayoutRecipesBinding.bind(view)
+            layoutRecipesBinding.textViewDishName.text = data.title
 //            we need to control it to make it marquee with isSelected = true
-//            layoutRecipesBinding.textViewDishName.isSelected = true
-//            layoutRecipesBinding.person.text = "${data.servings} Servings"
-//            layoutRecipesBinding.likes.text = "${data.aggregateLikes} Likes"
-//            layoutRecipesBinding.duration.text = "${data.readyInMinutes} Minutes"
-//            Picasso.get()
-//                .load(data.image)
-//                .into(layoutRecipesBinding.dishImage)
+            layoutRecipesBinding.textViewDishName.isSelected = true
+            layoutRecipesBinding.person.text = "${data.servings} Servings"
+            layoutRecipesBinding.likes.text = "${data.aggregateLikes} Likes"
+            layoutRecipesBinding.duration.text = "${data.readyInMinutes} Minutes"
+            Picasso.get()
+                .load(data.image)
+                .into(layoutRecipesBinding.dishImage)
 
             /**
              * with recipes
              */
-            recipesBinding = RecipesBinding.bind(view)
-            recipesBinding.dishName.text = data.title
-            //we need to control it to make it marquee with isSelected = true
-            recipesBinding.dishName.isSelected = true
-            recipesBinding.person.text = "${data.servings} Servings"
-            recipesBinding.like.text = "${data.aggregateLikes} Likes"
-            recipesBinding.time.text = "${data.readyInMinutes} Minutes"
-            Picasso.get()
-                .load(data.image)
-                .into(recipesBinding.imageView)
+//            recipesBinding = RecipesBinding.bind(view)
+//            recipesBinding.dishName.text = data.title
+//            //we need to control it to make it marquee with isSelected = true
+//            recipesBinding.dishName.isSelected = true
+//            recipesBinding.person.text = "${data.servings} Servings"
+//            recipesBinding.like.text = "${data.aggregateLikes} Likes"
+//            recipesBinding.time.text = "${data.readyInMinutes} Minutes"
+//            Picasso.get()
+//                .load(data.image)
+//                .into(recipesBinding.imageView)
 
         }.also { mainAdapter = it }
 

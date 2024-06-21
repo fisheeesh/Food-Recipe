@@ -32,15 +32,18 @@ class RequestManager private constructor(){
                 if(p1.isSuccessful){
                     val data = p1.body()
                     val objList = data?.recipes as ArrayList<Recipe>
+                    obj.hideProgress()
                     obj.setUpUI(objList)
                 }
                 else{
                     Log.d("TAG", "onResponse: ${p1.errorBody()}")
+                    obj.showProgress()
                 }
             }
 
             override fun onFailure(p0: Call<Root>, p1: Throwable) {
                 Log.d("TAG", "onFailure: ${p1.message}")
+                obj.showProgress()
             }
 
         })
