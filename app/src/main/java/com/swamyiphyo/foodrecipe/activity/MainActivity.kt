@@ -1,6 +1,8 @@
 package com.swamyiphyo.foodrecipe.activity
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,7 +23,6 @@ import com.swamyiphyo.foodrecipe.model.Recipe
 class MainActivity : AppCompatActivity(), Presenter {
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
-    private lateinit var recipesBinding: RecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,14 @@ class MainActivity : AppCompatActivity(), Presenter {
         setContentView(view)
 
         RequestManager.getInstance().getRndRecipe(this, this)
+
+        val arrayAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.tags,
+            R.layout.spinner_texts
+        )
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_inner_text)
+        activityMainBinding.spinnerTags.adapter = arrayAdapter
     }
 
     override fun showProgress() {
@@ -61,20 +70,6 @@ class MainActivity : AppCompatActivity(), Presenter {
             Picasso.get()
                 .load(data.image)
                 .into(layoutRecipesBinding.dishImage)
-
-            /**
-             * with recipes
-             */
-//            recipesBinding = RecipesBinding.bind(view)
-//            recipesBinding.dishName.text = data.title
-//            //we need to control it to make it marquee with isSelected = true
-//            recipesBinding.dishName.isSelected = true
-//            recipesBinding.person.text = "${data.servings} Servings"
-//            recipesBinding.like.text = "${data.aggregateLikes} Likes"
-//            recipesBinding.time.text = "${data.readyInMinutes} Minutes"
-//            Picasso.get()
-//                .load(data.image)
-//                .into(recipesBinding.imageView)
 
         }.also { mainAdapter = it }
 

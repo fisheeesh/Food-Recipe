@@ -7,31 +7,71 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/mainRV"
-       tools:listitem="@layout/recipes"
+   <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="match_parent">
-   </androidx.recyclerview.widget.RecyclerView>
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       android:background="@color/orange">
 
-   <androidx.constraintlayout.widget.ConstraintLayout
-       android:id="@+id/loading"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+      <Toolbar
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize">
 
-      <ProgressBar
-          android:id="@+id/progress_bar"
-          style="?android:attr/progressBarStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          android:indeterminateDrawable="@drawable/progress_back"
-          >
+         <RelativeLayout
+             android:gravity="center_vertical"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
-      </ProgressBar>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/app_name"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/white"
+                android:gravity="center"/>
 
-   </androidx.constraintlayout.widget.ConstraintLayout>
+            <Spinner
+                android:entries="@array/tags"
+                android:id="@+id/spinner_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"/>
+         </RelativeLayout>
+      </Toolbar>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/mainRV"
+          tools:listitem="@layout/recipes"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+      </androidx.recyclerview.widget.RecyclerView>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/loading"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+         <ProgressBar
+             android:id="@+id/progress_bar"
+             style="?android:attr/progressBarStyle"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+            >
+
+         </ProgressBar>
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+   </LinearLayout>
+
+
+
 </FrameLayout>
