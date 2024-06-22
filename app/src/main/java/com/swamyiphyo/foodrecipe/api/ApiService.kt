@@ -14,4 +14,11 @@ interface ApiService {
         @Query("apiKey") apiKey : String,
         @Query("number") number : String
     ) : Call<Root>
+
+    @GET("/recipes/random")
+    fun getRecipeByTags(
+        @Query("apiKey") apiKey : String,
+        @Query("number") number : String,
+        @Query("include-tags") tags : List<String>
+    ) : Call<Root>
 }

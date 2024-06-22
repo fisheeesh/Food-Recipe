@@ -1,6 +1,9 @@
 package com.swamyiphyo.foodrecipe.activity
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +27,25 @@ class MainActivity : AppCompatActivity(), Presenter {
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
+    private var tags = ArrayList<String>()
+
+    private val spinnerListener : AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            tags.clear()
+            /**
+             * get selected item from the spinner based on its position
+             * we provide String as data to our spinner adapter so the result should be String
+             * That's why we need to cast with toString()
+             */
+            val selectedTag = p0?.getItemAtPosition(p2).toString()
+            tags.add(selectedTag)
+            RequestManager.getInstance().getRecipeByTags(this@MainActivity, this@MainActivity, tags)
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +54,12 @@ class MainActivity : AppCompatActivity(), Presenter {
         val view = activityMainBinding.root
         setContentView(view)
 
-        RequestManager.getInstance().getRndRecipe(this, this)
+//        RequestManager.getInstance().getRndRecipe(this, this)
 
+        /**
+         * We want to display data on the spinner so we need to use adapter
+         * which will be act as a bridge between spinner and data we want to display in it
+         */
         val arrayAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.tags,
@@ -41,6 +67,8 @@ class MainActivity : AppCompatActivity(), Presenter {
         )
         arrayAdapter.setDropDownViewResource(R.layout.spinner_inner_text)
         activityMainBinding.spinnerTags.adapter = arrayAdapter
+
+        activityMainBinding.spinnerTags.onItemSelectedListener = spinnerListener
     }
 
     override fun showProgress() {
