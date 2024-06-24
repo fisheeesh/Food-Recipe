@@ -3,11 +3,13 @@ package com.swamyiphyo.foodrecipe.activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +25,7 @@ import com.swamyiphyo.foodrecipe.databinding.LayoutRecipesBinding
 import com.swamyiphyo.foodrecipe.databinding.RecipesBinding
 import com.swamyiphyo.foodrecipe.model.Recipe
 
-class MainActivity : AppCompatActivity(), Presenter {
+class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListener {
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity(), Presenter {
 //        RequestManager.getInstance().getRndRecipe(this, this)
 
         spinnerListener()
+
+        activityMainBinding.searchHome.setOnQueryTextListener(this)
     }
 
     override fun showProgress() {
@@ -67,6 +71,9 @@ class MainActivity : AppCompatActivity(), Presenter {
             Picasso.get()
                 .load(data.image)
                 .into(layoutRecipesBinding.dishImage)
+
+            val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
+            view.animation = animation
 
         }.also { mainAdapter = it }
 
@@ -106,5 +113,16 @@ class MainActivity : AppCompatActivity(), Presenter {
 
         //we need set onItemSelectedListener to our spinner to activate the spinnerListener
         activityMainBinding.spinnerTags.onItemSelectedListener = spinnerListener
+    }
+
+    override fun onQueryTextSubmit(query: String): Boolean {
+        tags.clear()
+        tags.add(query)
+        RequestManager.getInstance().getRecipeByTags(this, this, tags)
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+       return false
     }
 }
