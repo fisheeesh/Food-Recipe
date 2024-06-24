@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
     private var tags = ArrayList<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,10 +38,12 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
         val view = activityMainBinding.root
         setContentView(view)
 
-//        RequestManager.getInstance().getRndRecipe(this, this)
-
         spinnerListener()
 
+        /**
+         * dun forget to user searchView from androidx provide a consistent
+         * and reliable search experience for your users across a wide range of Android devices
+         */
         activityMainBinding.searchHome.setOnQueryTextListener(this)
     }
 
@@ -115,9 +118,9 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
         activityMainBinding.spinnerTags.onItemSelectedListener = spinnerListener
     }
 
-    override fun onQueryTextSubmit(query: String): Boolean {
+    override fun onQueryTextSubmit(query: String?): Boolean {
         tags.clear()
-        tags.add(query)
+        tags.add(query!!)
         RequestManager.getInstance().getRecipeByTags(this, this, tags)
         return true
     }
