@@ -3,6 +3,14 @@
     <string name="api_key">89800085d6b246dea2911971ce16c875</string>
     <string name="dish_name">Dish Name</string>
     <string name="menu">Menu</string>
+    <string name="recipe_details">Recipe Details</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="recipe_source">Recipe Source</string>
+    <string name="summary">Summary</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="ingre_qc">1 pc</string>
+    <string name="ingre_name">Chicken</string>
+    <string name="default_name">Default</string>
 
     <string-array name="tags">
         <item>main course</item>

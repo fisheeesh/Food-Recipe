@@ -62,7 +62,7 @@
 
                 <TextView
                     android:id="@+id/person"
-                    android:text="2 Persons"
+                    android:text="@string/default_name"
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:padding="8dp"
@@ -87,7 +87,7 @@
 
                 <TextView
                     android:id="@+id/likes"
-                    android:text="2 Persons"
+                    android:text="11 Likes"
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:padding="8dp"

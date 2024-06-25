@@ -1,11 +1,11 @@
 package com.swamyiphyo.foodrecipe.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +14,14 @@ import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.Utils.gone
 import com.swamyiphyo.foodrecipe.Utils.visible
 import com.swamyiphyo.foodrecipe.adapter.BaseAdapter
-import com.swamyiphyo.foodrecipe.api.Presenter
+import com.swamyiphyo.foodrecipe.Listener.Presenter
+import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
 import com.swamyiphyo.foodrecipe.api.RequestManager
 import com.swamyiphyo.foodrecipe.databinding.ActivityMainBinding
 import com.swamyiphyo.foodrecipe.databinding.LayoutRecipesBinding
 import com.swamyiphyo.foodrecipe.model.Recipe
 
-class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListener {
+class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListener, RecipeDetailResponseListener {
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
                 .load(data.image)
                 .into(layoutRecipesBinding.dishImage)
 
+            //recipe id will be displayed as toast message when user click on recipe card
             layoutRecipesBinding.rndRecipes.setOnClickListener(){
                 onRecipeClicked(data.id.toString())
             }
@@ -87,7 +89,8 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
     }
 
     override fun onRecipeClicked(recipeId: String) {
-        Toast.makeText(this@MainActivity, recipeId, Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this@MainActivity, RecipeDetailActivity::class.java)
+            .putExtra("id", recipeId))
     }
 
     private fun spinnerListener(){

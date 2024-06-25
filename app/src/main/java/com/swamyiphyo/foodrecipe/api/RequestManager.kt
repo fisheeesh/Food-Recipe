@@ -2,8 +2,11 @@ package com.swamyiphyo.foodrecipe.api
 
 import android.content.Context
 import android.util.Log
+import com.swamyiphyo.foodrecipe.Listener.Presenter
+import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
 import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.model.Recipe
+import com.swamyiphyo.foodrecipe.model.RecipeDetails
 import com.swamyiphyo.foodrecipe.model.Root
 import retrofit2.Call
 import retrofit2.Callback
@@ -67,6 +70,29 @@ class RequestManager private constructor(){
             override fun onFailure(p0: Call<Root>, p1: Throwable) {
                 Log.d("TAG", "onFailure: ${p1.message}")
                 obj.showProgress()
+            }
+
+        })
+    }
+    fun getRecipeDetail(context: Context, pre : Presenter, resp : RecipeDetailResponseListener, id : Int){
+        val api = ApiClient.apiService.getRecipeDetail(id, context.getString(R.string.api_key))
+        api.enqueue(object  : Callback<RecipeDetails>{
+            override fun onResponse(p0: Call<RecipeDetails>, p1: Response<RecipeDetails>) {
+                if(p1.isSuccessful){
+                    val response = p1.body()
+
+                    pre.hideProgress()
+
+                }
+                else{
+                    pre.showProgress()
+                    Log.d("TAG", "onResponse: ${p1.errorBody()}")
+                }
+            }
+
+            override fun onFailure(p0: Call<RecipeDetails>, p1: Throwable) {
+                pre.showProgress()
+                Log.d("TAG", "onFailure: ${p1.message}")
             }
 
         })
