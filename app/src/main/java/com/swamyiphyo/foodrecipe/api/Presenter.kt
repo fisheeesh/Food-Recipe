@@ -6,4 +6,5 @@ interface Presenter {
     fun showProgress()
     fun hideProgress()
     fun setUpUI(objList : ArrayList<Recipe>)
+    fun onRecipeClicked(recipeId : String)
 }

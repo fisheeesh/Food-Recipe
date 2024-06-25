@@ -1,17 +1,13 @@
 package com.swamyiphyo.foodrecipe.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.swamyiphyo.foodrecipe.R
@@ -22,7 +18,6 @@ import com.swamyiphyo.foodrecipe.api.Presenter
 import com.swamyiphyo.foodrecipe.api.RequestManager
 import com.swamyiphyo.foodrecipe.databinding.ActivityMainBinding
 import com.swamyiphyo.foodrecipe.databinding.LayoutRecipesBinding
-import com.swamyiphyo.foodrecipe.databinding.RecipesBinding
 import com.swamyiphyo.foodrecipe.model.Recipe
 
 class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListener {
@@ -59,7 +54,7 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         BaseAdapter(R.layout.layout_recipes, objList, false){
-            _, data, view ->
+            position, data, view ->
 
             /**
              * with layout_recipes
@@ -75,6 +70,10 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
                 .load(data.image)
                 .into(layoutRecipesBinding.dishImage)
 
+            layoutRecipesBinding.rndRecipes.setOnClickListener(){
+                onRecipeClicked(data.id.toString())
+            }
+
             val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
             view.animation = animation
 
@@ -86,6 +85,11 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
             adapter = mainAdapter
         }
     }
+
+    override fun onRecipeClicked(recipeId: String) {
+        Toast.makeText(this@MainActivity, recipeId, Toast.LENGTH_SHORT).show()
+    }
+
     private fun spinnerListener(){
         val spinnerListener : AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
