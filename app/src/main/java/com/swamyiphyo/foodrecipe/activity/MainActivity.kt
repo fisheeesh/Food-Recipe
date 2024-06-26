@@ -15,14 +15,13 @@ import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.Utils.gone
 import com.swamyiphyo.foodrecipe.Utils.visible
 import com.swamyiphyo.foodrecipe.adapter.BaseAdapter
-import com.swamyiphyo.foodrecipe.Listener.Presenter
-import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
+import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.api.RequestManager
 import com.swamyiphyo.foodrecipe.databinding.ActivityMainBinding
 import com.swamyiphyo.foodrecipe.databinding.LayoutRecipesBinding
 import com.swamyiphyo.foodrecipe.model.Recipe
 
-class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListener{
+class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryTextListener{
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>

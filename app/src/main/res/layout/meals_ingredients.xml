@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="8dp"
+    app:cardCornerRadius="8dp"
     android:layout_margin="8dp">
 
     <LinearLayout
@@ -12,8 +13,12 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/inger_quality"
+            android:id="@+id/ingre_quality"
             android:text="@string/ingre_qc"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
             android:textAlignment="center"
             android:textSize="16sp"
             android:padding="4dp"
@@ -27,6 +32,10 @@
         <TextView
             android:id="@+id/ingre_name"
             android:text="@string/ingre_name"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
             android:textSize="16sp"
             android:textStyle="bold"
             android:padding="4dp"

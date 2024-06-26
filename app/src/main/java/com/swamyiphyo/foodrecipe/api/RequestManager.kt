@@ -2,9 +2,10 @@ package com.swamyiphyo.foodrecipe.api
 
 import android.content.Context
 import android.util.Log
-import com.swamyiphyo.foodrecipe.Listener.Presenter
+import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
 import com.swamyiphyo.foodrecipe.R
+import com.swamyiphyo.foodrecipe.model.ExtendedIngredient
 import com.swamyiphyo.foodrecipe.model.Recipe
 import com.swamyiphyo.foodrecipe.model.RecipeDetails
 import com.swamyiphyo.foodrecipe.model.Root
@@ -28,7 +29,7 @@ class RequestManager private constructor(){
             return requestManager
         }
     }
-    fun getRndRecipe(context : Context, obj : Presenter){
+    fun getRndRecipe(context : Context, obj : RndRecipeListener){
         val api = ApiClient.apiService.getRndRecipe(context.getString(R.string.api_key), "11")
         api.enqueue(object : Callback<Root> {
             override fun onResponse(p0: Call<Root>, p1: Response<Root>) {
@@ -51,7 +52,7 @@ class RequestManager private constructor(){
 
         })
     }
-    fun getRecipeByTags(context : Context, obj : Presenter, tags : List<String>){
+    fun getRecipeByTags(context : Context, obj : RndRecipeListener, tags : List<String>){
         val api = ApiClient.apiService.getRecipeByTags(context.getString(R.string.api_key),"9", tags)
         api.enqueue(object : Callback<Root>{
             override fun onResponse(p0: Call<Root>, p1: Response<Root>) {
@@ -80,8 +81,9 @@ class RequestManager private constructor(){
             override fun onResponse(p0: Call<RecipeDetails>, p1: Response<RecipeDetails>) {
                 if(p1.isSuccessful){
                     val response = p1.body()
-                        resp.hideProgress()
-                        resp.setUpUI(response!!)
+                    resp.hideProgress()
+                    resp.setUpUI(response!!)
+                    resp.setUpRecyclerView(response.extendedIngredients as List<ExtendedIngredient>)
                 }
                 else{
                     resp.showProgress()
