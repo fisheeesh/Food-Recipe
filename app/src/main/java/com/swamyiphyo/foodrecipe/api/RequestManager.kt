@@ -74,24 +74,23 @@ class RequestManager private constructor(){
 
         })
     }
-    fun getRecipeDetail(context: Context, pre : Presenter, resp : RecipeDetailResponseListener, id : Int){
+    fun getRecipeDetail(context: Context,resp : RecipeDetailResponseListener, id : Int){
         val api = ApiClient.apiService.getRecipeDetail(id, context.getString(R.string.api_key))
         api.enqueue(object  : Callback<RecipeDetails>{
             override fun onResponse(p0: Call<RecipeDetails>, p1: Response<RecipeDetails>) {
                 if(p1.isSuccessful){
                     val response = p1.body()
-
-                    pre.hideProgress()
-
+                        resp.hideProgress()
+                        resp.setUpUI(response!!)
                 }
                 else{
-                    pre.showProgress()
+                    resp.showProgress()
                     Log.d("TAG", "onResponse: ${p1.errorBody()}")
                 }
             }
 
             override fun onFailure(p0: Call<RecipeDetails>, p1: Throwable) {
-                pre.showProgress()
+                resp.showProgress()
                 Log.d("TAG", "onFailure: ${p1.message}")
             }
 

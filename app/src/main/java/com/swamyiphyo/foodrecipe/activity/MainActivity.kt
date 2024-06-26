@@ -1,5 +1,6 @@
 package com.swamyiphyo.foodrecipe.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -21,7 +22,7 @@ import com.swamyiphyo.foodrecipe.databinding.ActivityMainBinding
 import com.swamyiphyo.foodrecipe.databinding.LayoutRecipesBinding
 import com.swamyiphyo.foodrecipe.model.Recipe
 
-class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListener, RecipeDetailResponseListener {
+class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListener{
     private lateinit var activityMainBinding: ActivityMainBinding
     private lateinit var layoutRecipesBinding: LayoutRecipesBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
@@ -43,19 +44,16 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
         activityMainBinding.searchHome.setOnQueryTextListener(this)
     }
 
-    override fun showProgress() {
-        activityMainBinding.loading.visible()
-    }
+    override fun showProgress() = activityMainBinding.loading.visible()
 
-    override fun hideProgress() {
-        activityMainBinding.loading.gone()
-    }
+    override fun hideProgress() = activityMainBinding.loading.gone()
 
+    @SuppressLint("SetTextI18n")
     override fun setUpUI(objList: ArrayList<Recipe>) {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         BaseAdapter(R.layout.layout_recipes, objList, false){
-            position, data, view ->
+            _, data, view ->
 
             /**
              * with layout_recipes
@@ -71,9 +69,14 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
                 .load(data.image)
                 .into(layoutRecipesBinding.dishImage)
 
-            //recipe id will be displayed as toast message when user click on recipe card
+            /**
+             * when user click recipe card, use will be navigated to
+             * the specific recipe page according to recipeId
+             */
             layoutRecipesBinding.rndRecipes.setOnClickListener(){
-                onRecipeClicked(data.id.toString())
+                val recipeId = data.id.toString()
+                startActivity(Intent(this@MainActivity, RecipeDetailActivity::class.java)
+                    .putExtra("id", recipeId))
             }
 
             val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
@@ -86,11 +89,6 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
             setHasFixedSize(true)
             adapter = mainAdapter
         }
-    }
-
-    override fun onRecipeClicked(recipeId: String) {
-        startActivity(Intent(this@MainActivity, RecipeDetailActivity::class.java)
-            .putExtra("id", recipeId))
     }
 
     private fun spinnerListener(){
@@ -121,7 +119,9 @@ class MainActivity : AppCompatActivity(), Presenter, SearchView.OnQueryTextListe
         arrayAdapter.setDropDownViewResource(R.layout.spinner_inner_text)
         activityMainBinding.spinnerTags.adapter = arrayAdapter
 
-        //we need set onItemSelectedListener to our spinner to activate the spinnerListener
+        /**
+         * we need set onItemSelectedListener to our spinner to activate the spinnerListener
+         */
         activityMainBinding.spinnerTags.onItemSelectedListener = spinnerListener
     }
 
