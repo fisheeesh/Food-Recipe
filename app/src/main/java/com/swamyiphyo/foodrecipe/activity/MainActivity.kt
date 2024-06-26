@@ -41,6 +41,12 @@ class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryT
          * and reliable search experience for your users across a wide range of Android devices
          */
         activityMainBinding.searchHome.setOnQueryTextListener(this)
+
+        view.setOnRefreshListener {
+            view.isRefreshing = false
+            RequestManager.getInstance().getRndRecipe(this, this)
+            activityMainBinding.mainRV.adapter = mainAdapter
+        }
     }
 
     override fun showProgress() = activityMainBinding.loading.visible()

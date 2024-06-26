@@ -2,10 +2,7 @@ package com.swamyiphyo.foodrecipe.activity
 
 import android.os.Bundle
 import android.view.animation.AnimationUtils
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
@@ -17,8 +14,6 @@ import com.swamyiphyo.foodrecipe.api.RequestManager
 import com.swamyiphyo.foodrecipe.databinding.ActivityRecipeDetailBinding
 import com.swamyiphyo.foodrecipe.databinding.MealsIngredientsBinding
 import com.swamyiphyo.foodrecipe.model.ExtendedIngredient
-import com.swamyiphyo.foodrecipe.model.Ingredient
-import com.swamyiphyo.foodrecipe.model.Recipe
 import com.swamyiphyo.foodrecipe.model.RecipeDetails
 
 class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener {
