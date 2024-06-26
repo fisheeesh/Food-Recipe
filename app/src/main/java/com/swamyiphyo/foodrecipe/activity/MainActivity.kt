@@ -42,10 +42,15 @@ class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryT
          */
         activityMainBinding.searchHome.setOnQueryTextListener(this)
 
+        /**
+         * whenever user refresh layout, the recipe card will be shuffled according to the tags selected
+         * and the search bar will be cleared
+         */
         view.setOnRefreshListener {
             view.isRefreshing = false
-            RequestManager.getInstance().getRndRecipe(this, this)
+            RequestManager.getInstance().getRecipeByTags(this, this,tags)
             activityMainBinding.mainRV.adapter = mainAdapter
+            activityMainBinding.searchHome.setQuery("", false)
         }
     }
 
@@ -108,6 +113,13 @@ class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryT
                 val selectedTag = p0?.getItemAtPosition(p2).toString()
                 tags.add(selectedTag)
                 RequestManager.getInstance().getRecipeByTags(this@MainActivity, this@MainActivity, tags)
+
+                /**
+                 * whenever the user selects an item from the dropdown,
+                 * the search bar is automatically cleared.
+                 * false means we dun want to do search function
+                 */
+                activityMainBinding.searchHome.setQuery("", false)
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
