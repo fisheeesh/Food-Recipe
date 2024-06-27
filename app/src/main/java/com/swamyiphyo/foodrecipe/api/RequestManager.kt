@@ -2,13 +2,16 @@ package com.swamyiphyo.foodrecipe.api
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
+import com.swamyiphyo.foodrecipe.Listener.SimilarRecipeListener
 import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.model.ExtendedIngredient
 import com.swamyiphyo.foodrecipe.model.Recipe
 import com.swamyiphyo.foodrecipe.model.RecipeDetails
-import com.swamyiphyo.foodrecipe.model.Root
+import com.swamyiphyo.foodrecipe.model.RndRecipes
+import com.swamyiphyo.foodrecipe.model.SimilarRecipe
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,8 +34,8 @@ class RequestManager private constructor(){
     }
     fun getRndRecipe(context : Context, obj : RndRecipeListener){
         val api = ApiClient.apiService.getRndRecipe(context.getString(R.string.api_key), "11")
-        api.enqueue(object : Callback<Root> {
-            override fun onResponse(p0: Call<Root>, p1: Response<Root>) {
+        api.enqueue(object : Callback<RndRecipes> {
+            override fun onResponse(p0: Call<RndRecipes>, p1: Response<RndRecipes>) {
                 if(p1.isSuccessful){
                     val data = p1.body()
                     val objList = data?.recipes as ArrayList<Recipe>
@@ -45,7 +48,7 @@ class RequestManager private constructor(){
                 }
             }
 
-            override fun onFailure(p0: Call<Root>, p1: Throwable) {
+            override fun onFailure(p0: Call<RndRecipes>, p1: Throwable) {
                 Log.d("TAG", "onFailure: ${p1.message}")
                 obj.showProgress()
             }
@@ -54,8 +57,8 @@ class RequestManager private constructor(){
     }
     fun getRecipeByTags(context : Context, obj : RndRecipeListener, tags : List<String>){
         val api = ApiClient.apiService.getRecipeByTags(context.getString(R.string.api_key),"9", tags)
-        api.enqueue(object : Callback<Root>{
-            override fun onResponse(p0: Call<Root>, p1: Response<Root>) {
+        api.enqueue(object : Callback<RndRecipes>{
+            override fun onResponse(p0: Call<RndRecipes>, p1: Response<RndRecipes>) {
                 if(p1.isSuccessful){
                     val data = p1.body()
                     val objList = data?.recipes as ArrayList<Recipe>
@@ -68,7 +71,7 @@ class RequestManager private constructor(){
                 }
             }
 
-            override fun onFailure(p0: Call<Root>, p1: Throwable) {
+            override fun onFailure(p0: Call<RndRecipes>, p1: Throwable) {
                 Log.d("TAG", "onFailure: ${p1.message}")
                 obj.showProgress()
             }
@@ -93,6 +96,26 @@ class RequestManager private constructor(){
 
             override fun onFailure(p0: Call<RecipeDetails>, p1: Throwable) {
                 resp.showProgress()
+                Log.d("TAG", "onFailure: ${p1.message}")
+            }
+
+        })
+    }
+    fun getSimilarRecipe(context : Context, obj : SimilarRecipeListener, id : Int){
+        val api = ApiClient.apiService.getSimilarRecipe(id, "4", context.getString(R.string.api_key))
+        api.enqueue(object : Callback<List<SimilarRecipe>>{
+            override fun onResponse(p0: Call<List<SimilarRecipe>>, p1: Response<List<SimilarRecipe>>) {
+                if(p1.isSuccessful){
+                    val response = p1.body()
+                    val objList = response as ArrayList<SimilarRecipe>
+                    obj.setSimilarRV(objList)
+                }
+                else{
+                    Toast.makeText(context, p1.message(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(p0: Call<List<SimilarRecipe>>, p1: Throwable) {
                 Log.d("TAG", "onFailure: ${p1.message}")
             }
 

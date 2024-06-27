@@ -82,6 +82,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    tools:listitem="@layout/similar_recipes"
+                    android:id="@+id/meal_similar"
+                    android:layout_margin="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
                 <TextView
                     android:text="@string/ingredients"
                     android:textSize="18sp"
@@ -116,8 +123,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:indeterminateDrawable="@drawable/progress_back">
+            app:layout_constraintTop_toTopOf="parent">
 
         </ProgressBar>
 
