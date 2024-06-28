@@ -3,11 +3,13 @@ package com.swamyiphyo.foodrecipe.api
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.swamyiphyo.foodrecipe.Listener.InstructionsListener
 import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
 import com.swamyiphyo.foodrecipe.Listener.SimilarRecipeListener
 import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.model.ExtendedIngredient
+import com.swamyiphyo.foodrecipe.model.Instructions
 import com.swamyiphyo.foodrecipe.model.Recipe
 import com.swamyiphyo.foodrecipe.model.RecipeDetails
 import com.swamyiphyo.foodrecipe.model.RndRecipes
@@ -120,5 +122,25 @@ class RequestManager private constructor(){
             }
 
         })
+    }
+    fun getRecipeInstructions(context : Context, obj : InstructionsListener, id : Int){
+        val api = ApiClient.apiService.getRecipeInstructions(id, context.getString(R.string.api_key))
+        api.enqueue(object : Callback<List<Instructions>>{
+            override fun onResponse(p0: Call<List<Instructions>>, p1: Response<List<Instructions>>) {
+                if(p1.isSuccessful){
+                    val response = p1.body()
+                    obj.hideProgress()
+                }
+                else{
+                    Log.d("TAG", "onResponse: ${p1.errorBody()}")
+                }
+            }
+
+            override fun onFailure(p0: Call<List<Instructions>>, p1: Throwable) {
+                Log.d("TAG", "onFailure: ${p1.message}")
+            }
+
+        })
+
     }
 }

@@ -12,6 +12,8 @@
     <string name="ingre_name">Chicken</string>
     <string name="default_name">Default</string>
     <string name="similar_recipes">Similar Recipes</string>
+    <string name="instructions">Instructions</string>
+    <string name="equipments">Equipments</string>
 
     <string-array name="tags">
         <item>main course</item>

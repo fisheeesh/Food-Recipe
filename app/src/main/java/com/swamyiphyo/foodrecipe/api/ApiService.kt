@@ -1,5 +1,6 @@
 package com.swamyiphyo.foodrecipe.api
 
+import com.swamyiphyo.foodrecipe.model.Instructions
 import com.swamyiphyo.foodrecipe.model.RecipeDetails
 import com.swamyiphyo.foodrecipe.model.RndRecipes
 import com.swamyiphyo.foodrecipe.model.SimilarRecipe
@@ -38,4 +39,10 @@ interface ApiService {
         @Query("number") number : String,
         @Query ("apiKey") apiKey : String,
     ) : Call<List<SimilarRecipe>>
+
+    @GET("/recipes/{id}/analyzedInstructions")
+    fun getRecipeInstructions(
+        @Path("id") id : Int,
+        @Query("apiKey") apiKey : String,
+    ) : Call<List<Instructions>>
 }
