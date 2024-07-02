@@ -55,7 +55,7 @@
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:srcCompat="@drawable/servings" />
+            app:srcCompat="@drawable/ic_servings" />
 
         <TextView
             android:id="@+id/person"
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView4"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:srcCompat="@drawable/likes" />
+            app:srcCompat="@drawable/ic_likes" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -89,7 +89,7 @@
             android:layout_marginEnd="75dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:srcCompat="@drawable/duration" />
+            app:srcCompat="@drawable/ic_duration" />
 
         <TextView
             android:id="@+id/like"

@@ -59,7 +59,7 @@
                 android:id="@+id/searchHome"
                 app:queryHint="Search Your Recipe....."
                 app:iconifiedByDefault="false"
-                app:searchIcon="@drawable/search"
+                app:searchIcon="@drawable/ic_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -70,7 +70,7 @@
 
          <androidx.recyclerview.widget.RecyclerView
              android:id="@+id/mainRV"
-             tools:listitem="@layout/layout_recipes"
+             tools:listitem="@layout/layout_recipe_lists"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
          </androidx.recyclerview.widget.RecyclerView>

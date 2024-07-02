@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Recipe App</string>
-    <string name="api_key">fe601951b10a4b54a570f8f5f96fb8fe</string>
+    <string name="api_key">c6fec83434694636bd1d2c835eb8cdec</string>
     <string name="dish_name">Dish Name</string>
     <string name="menu">Menu</string>
     <string name="recipe_details">Recipe Details</string>
@@ -14,6 +14,7 @@
     <string name="similar_recipes">Similar Recipes</string>
     <string name="instructions">Instructions</string>
     <string name="equipments">Equipments</string>
+    <string name="no_similar">No Similar Recipes</string>
 
     <string-array name="tags">
         <item>main course</item>

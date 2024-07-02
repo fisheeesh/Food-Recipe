@@ -53,7 +53,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:src="@drawable/servings"
+                    android:src="@drawable/ic_servings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 </ImageView>
@@ -78,7 +78,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:src="@drawable/likes"
+                    android:src="@drawable/ic_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 </ImageView>
@@ -103,7 +103,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:src="@drawable/duration"
+                    android:src="@drawable/ic_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 </ImageView>

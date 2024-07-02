@@ -3,10 +3,8 @@ package com.swamyiphyo.foodrecipe.api
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.swamyiphyo.foodrecipe.Listener.InstructionsListener
 import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
-import com.swamyiphyo.foodrecipe.Listener.SimilarRecipeListener
 import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.model.ExtendedIngredient
 import com.swamyiphyo.foodrecipe.model.Instructions
@@ -42,7 +40,7 @@ class RequestManager private constructor(){
                     val data = p1.body()
                     val objList = data?.recipes as ArrayList<Recipe>
                     obj.hideProgress()
-                    obj.setUpUI(objList)
+                    obj.setUpUIForRndRecipe(objList)
                 }
                 else{
                     Log.d("TAG", "onResponse: ${p1.errorBody()}")
@@ -65,7 +63,7 @@ class RequestManager private constructor(){
                     val data = p1.body()
                     val objList = data?.recipes as ArrayList<Recipe>
                     obj.hideProgress()
-                    obj.setUpUI(objList)
+                    obj.setUpUIForRndRecipe(objList)
                 }
                 else{
                     Log.d("TAG", "onResponse: ${p1.errorBody()}")
@@ -87,8 +85,8 @@ class RequestManager private constructor(){
                 if(p1.isSuccessful){
                     val response = p1.body()
                     resp.hideProgress()
-                    resp.setUpUI(response!!)
-                    resp.setUpRecyclerView(response.extendedIngredients as List<ExtendedIngredient>)
+                    resp.setUpUIForRecipeDetail(response!!)
+//                    resp.setUpRecyclerViewForIngredients(response.extendedIngredients as List<ExtendedIngredient>)
                 }
                 else{
                     resp.showProgress()
@@ -102,45 +100,5 @@ class RequestManager private constructor(){
             }
 
         })
-    }
-    fun getSimilarRecipe(context : Context, obj : SimilarRecipeListener, id : Int){
-        val api = ApiClient.apiService.getSimilarRecipe(id, "4", context.getString(R.string.api_key))
-        api.enqueue(object : Callback<List<SimilarRecipe>>{
-            override fun onResponse(p0: Call<List<SimilarRecipe>>, p1: Response<List<SimilarRecipe>>) {
-                if(p1.isSuccessful){
-                    val response = p1.body()
-                    val objList = response as ArrayList<SimilarRecipe>
-                    obj.setSimilarRV(objList)
-                }
-                else{
-                    Toast.makeText(context, p1.message(), Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(p0: Call<List<SimilarRecipe>>, p1: Throwable) {
-                Log.d("TAG", "onFailure: ${p1.message}")
-            }
-
-        })
-    }
-    fun getRecipeInstructions(context : Context, obj : InstructionsListener, id : Int){
-        val api = ApiClient.apiService.getRecipeInstructions(id, context.getString(R.string.api_key))
-        api.enqueue(object : Callback<List<Instructions>>{
-            override fun onResponse(p0: Call<List<Instructions>>, p1: Response<List<Instructions>>) {
-                if(p1.isSuccessful){
-                    val response = p1.body()
-                    obj.hideProgress()
-                }
-                else{
-                    Log.d("TAG", "onResponse: ${p1.errorBody()}")
-                }
-            }
-
-            override fun onFailure(p0: Call<List<Instructions>>, p1: Throwable) {
-                Log.d("TAG", "onFailure: ${p1.message}")
-            }
-
-        })
-
     }
 }

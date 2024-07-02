@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,12 +19,12 @@ import com.swamyiphyo.foodrecipe.adapter.BaseAdapter
 import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.api.RequestManager
 import com.swamyiphyo.foodrecipe.databinding.ActivityMainBinding
-import com.swamyiphyo.foodrecipe.databinding.LayoutRecipesBinding
+import com.swamyiphyo.foodrecipe.databinding.LayoutRecipeListsBinding
 import com.swamyiphyo.foodrecipe.model.Recipe
 
 class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryTextListener{
     private lateinit var activityMainBinding: ActivityMainBinding
-    private lateinit var layoutRecipesBinding: LayoutRecipesBinding
+    private lateinit var layoutRecipesBinding: LayoutRecipeListsBinding
     private lateinit var mainAdapter : BaseAdapter<Recipe>
     private var tags = ArrayList<String>()
 
@@ -59,16 +60,16 @@ class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryT
     override fun hideProgress() = activityMainBinding.loading.gone()
 
     @SuppressLint("SetTextI18n")
-    override fun setUpUI(objList: ArrayList<Recipe>) {
+    override fun setUpUIForRndRecipe(objList: ArrayList<Recipe>) {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        BaseAdapter(R.layout.layout_recipes, objList, false){
+        BaseAdapter(R.layout.layout_recipe_lists, objList, false){
             _, data, view ->
 
             /**
              * with layout_recipes
              */
-            layoutRecipesBinding = LayoutRecipesBinding.bind(view)
+            layoutRecipesBinding = LayoutRecipeListsBinding.bind(view)
             layoutRecipesBinding.textViewDishName.text = data.title
 //            we need to control it to make it marquee with isSelected = true
             layoutRecipesBinding.textViewDishName.isSelected = true
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryT
              */
             layoutRecipesBinding.rndRecipes.setOnClickListener(){
                 val recipeId = data.id.toString()
+                Toast.makeText(this, recipeId, Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this@MainActivity, RecipeDetailActivity::class.java)
                     .putExtra("id", recipeId))
             }

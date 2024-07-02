@@ -8,6 +8,6 @@ import com.swamyiphyo.foodrecipe.model.RecipeDetails
 interface RecipeDetailResponseListener {
     fun showProgress()
     fun hideProgress()
-    fun setUpUI(obj : RecipeDetails)
-    fun setUpRecyclerView(objList: List<ExtendedIngredient>)
+    fun setUpUIForRecipeDetail(obj : RecipeDetails)
+    fun setUpRecyclerViewForIngredients(objList: List<ExtendedIngredient>)
 }

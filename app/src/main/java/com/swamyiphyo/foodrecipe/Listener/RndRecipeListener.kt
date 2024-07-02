@@ -5,5 +5,5 @@ import com.swamyiphyo.foodrecipe.model.Recipe
 interface RndRecipeListener {
     fun showProgress()
     fun hideProgress()
-    fun setUpUI(objList : ArrayList<Recipe>)
+    fun setUpUIForRndRecipe(objList : ArrayList<Recipe>)
 }
