@@ -14,26 +14,26 @@ import retrofit2.http.Query
  * we need to add apiKey for any api call
  */
 interface ApiService {
-    @GET("/recipes/random")
+    @GET("recipes/random")
     fun getRndRecipe(
         @Query("apiKey") apiKey : String,
         @Query("number") number : String
     ) : Call<RndRecipes>
 
-    @GET("/recipes/random")
+    @GET("recipes/random")
     fun getRecipeByTags(
         @Query("apiKey") apiKey : String,
         @Query("number") number : String,
         @Query("include-tags") tags : List<String>
     ) : Call<RndRecipes>
 
-    @GET("/recipes/{id}/information")
+    @GET("recipes/{id}/information")
     fun getRecipeDetail(
         @Path("id") id : Int,
         @Query ("apiKey") apiKey : String,
     ) : Call<RecipeDetails>
 
-    @GET("/recipes/{id}/similar")
+    @GET("recipes/{id}/similar")
     fun getSimilarRecipes(
         @Path("id") id : Int,
         @Query("apiKey") apiKey : String,

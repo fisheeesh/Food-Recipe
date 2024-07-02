@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Recipe App</string>
-    <string name="api_key">c6fec83434694636bd1d2c835eb8cdec</string>
+    <string name="api_key">8988a6b04f824031bb5a3414082a001d</string>
     <string name="dish_name">Dish Name</string>
     <string name="menu">Menu</string>
     <string name="recipe_details">Recipe Details</string>

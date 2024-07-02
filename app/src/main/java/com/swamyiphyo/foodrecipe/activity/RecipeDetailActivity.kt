@@ -1,5 +1,6 @@
 package com.swamyiphyo.foodrecipe.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -86,11 +87,19 @@ class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, 
             similarBinding = LayoutMealSimilarBinding.bind(view)
 
             similarBinding.textViewSimilarTitle.text = data.title
+            similarBinding.textViewSimilarTitle.isSelected = true
             similarBinding.textViewSimilarServing.text = "${data.servings} Persons"
             Picasso.get().load("https://img.spoonacular.com/recipes/${data.id}-556x370.${data.imageType}").into(similarBinding.imageViewSimilarImage)
 
             val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
             view.animation = animation
+
+            similarBinding.mealSimilarHolder.setOnClickListener(){
+                val recipeId = data.id.toString()
+                startActivity(
+                    Intent(this@RecipeDetailActivity, RecipeDetailActivity::class.java)
+                    .putExtra("id", recipeId))
+            }
         }.also { similarAdapter = it }
 
         binding.mealSimilarRecipes.apply {
