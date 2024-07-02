@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
+import com.swamyiphyo.foodrecipe.Listener.SimilarRecipesListener
 import com.swamyiphyo.foodrecipe.R
 import com.swamyiphyo.foodrecipe.model.ExtendedIngredient
 import com.swamyiphyo.foodrecipe.model.Instructions
@@ -97,6 +98,26 @@ class RequestManager private constructor(){
             override fun onFailure(p0: Call<RecipeDetails>, p1: Throwable) {
                 resp.showProgress()
                 Log.d("TAG", "onFailure: ${p1.message}")
+            }
+
+        })
+    }
+    fun getSimilarRecipes(context : Context, sim : SimilarRecipesListener, id : Int){
+        val api = ApiClient.apiService.getSimilarRecipes(id, context.getString(R.string.api_key), "4")
+        api.enqueue(object : Callback<List<SimilarRecipe>>{
+            override fun onResponse(p0: Call<List<SimilarRecipe>>, p1: Response<List<SimilarRecipe>>) {
+                if(p1.isSuccessful){
+                    val response = p1.body()
+                    val objList = response as ArrayList<SimilarRecipe>
+                    sim.setUpUIForSimilarRecipes(objList)
+                }
+                else{
+                    Log.d("TAG", "onResponse: ${p1.errorBody()}")
+                }
+            }
+
+            override fun onFailure(p0: Call<List<SimilarRecipe>>, p1: Throwable) {
+                Log.d("Similar Fail", "onFailure: ${p1.message}")
             }
 
         })

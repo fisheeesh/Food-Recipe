@@ -32,4 +32,11 @@ interface ApiService {
         @Path("id") id : Int,
         @Query ("apiKey") apiKey : String,
     ) : Call<RecipeDetails>
+
+    @GET("/recipes/{id}/similar")
+    fun getSimilarRecipes(
+        @Path("id") id : Int,
+        @Query("apiKey") apiKey : String,
+        @Query("number") number : String
+    ) : Call<List<SimilarRecipe>>
 }

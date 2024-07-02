@@ -77,6 +77,8 @@
                     android:text="@string/summary"
                     android:textSize="14sp"
                     android:padding="8dp"
+                    android:maxLines="5"
+                    android:ellipsize="end"
                     android:layout_margin="8dp"
                     android:textColor="@color/white"
                     android:layout_width="match_parent"
@@ -89,6 +91,13 @@
                     android:padding="8dp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/meal_similar_recipes"
+                    android:layout_margin="8dp"
+                    tools:listitem="@layout/layout_meal_similar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
