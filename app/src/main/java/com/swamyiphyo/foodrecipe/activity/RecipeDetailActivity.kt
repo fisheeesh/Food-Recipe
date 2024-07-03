@@ -71,14 +71,14 @@ class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, 
             view.animation = animation
         }.also { mainAdapter = it }
 
-//        binding.RVIngredients.apply {
-//            layoutManager = linearLayoutManager
-//            setHasFixedSize(true)
-//            adapter = mainAdapter
-//        }
+        binding.RVIngredients.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            adapter = mainAdapter
+        }
     }
 
-    override fun setUpUIForSimilarRecipes(objList: List<SimilarRecipe>) {
+    override fun setUpUIForSimilarRecipes(objList: ArrayList<SimilarRecipe>) {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         BaseAdapter(R.layout.layout_meal_similar, objList, false){
@@ -89,6 +89,7 @@ class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, 
             similarBinding.textViewSimilarTitle.text = data.title
             similarBinding.textViewSimilarTitle.isSelected = true
             similarBinding.textViewSimilarServing.text = "${data.servings} Persons"
+            similarBinding.textViewSimilarServing.isSelected = true
             Picasso.get().load("https://img.spoonacular.com/recipes/${data.id}-556x370.${data.imageType}").into(similarBinding.imageViewSimilarImage)
 
             val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
@@ -107,5 +108,14 @@ class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, 
             setHasFixedSize(true)
             adapter = similarAdapter
         }
+    }
+
+    override fun showNoSimilar() {
+        binding.textViewSimilarRecipes.apply {
+            text = getString(R.string.no_similar)
+            setPadding(8,8,8,8)
+            textSize = 22F
+        }
+
     }
 }

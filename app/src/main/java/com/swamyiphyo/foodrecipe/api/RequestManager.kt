@@ -87,7 +87,7 @@ class RequestManager private constructor(){
                     val response = p1.body()
                     resp.hideProgress()
                     resp.setUpUIForRecipeDetail(response!!)
-//                    resp.setUpRecyclerViewForIngredients(response.extendedIngredients as List<ExtendedIngredient>)
+                    resp.setUpRecyclerViewForIngredients(response.extendedIngredients as List<ExtendedIngredient>)
                 }
                 else{
                     resp.showProgress()
@@ -109,10 +109,15 @@ class RequestManager private constructor(){
                 if(p1.isSuccessful){
                     val response = p1.body()
                     val objList = response as ArrayList<SimilarRecipe>
-                    sim.setUpUIForSimilarRecipes(objList)
+                    if(objList.isEmpty()){
+                        sim.showNoSimilar()
+                    }
+                    else{
+                        sim.setUpUIForSimilarRecipes(objList)
+                    }
                 }
                 else{
-                    Log.d("TAG", "onResponse: ${p1.errorBody()}")
+                    Log.d("Similar", "onResponse: ${p1.errorBody()}")
                 }
             }
 
