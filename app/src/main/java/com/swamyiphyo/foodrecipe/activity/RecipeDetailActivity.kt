@@ -6,6 +6,7 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
+import com.swamyiphyo.foodrecipe.Listener.InstructionListener
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
 import com.swamyiphyo.foodrecipe.Listener.SimilarRecipesListener
 import com.swamyiphyo.foodrecipe.R
@@ -14,18 +15,34 @@ import com.swamyiphyo.foodrecipe.Utils.visible
 import com.swamyiphyo.foodrecipe.adapter.BaseAdapter
 import com.swamyiphyo.foodrecipe.api.RequestManager
 import com.swamyiphyo.foodrecipe.databinding.ActivityRecipeDetailBinding
-import com.swamyiphyo.foodrecipe.databinding.LayoutMealIngredientsBinding
+import com.swamyiphyo.foodrecipe.databinding.LayoutInstructionListsBinding
 import com.swamyiphyo.foodrecipe.databinding.LayoutMealSimilarBinding
-import com.swamyiphyo.foodrecipe.model.ExtendedIngredient
+import com.swamyiphyo.foodrecipe.databinding.LayoutStepItemsListBinding
+import com.swamyiphyo.foodrecipe.databinding.LayoutStepsListBinding
+import com.swamyiphyo.foodrecipe.model.Equipment
+import com.swamyiphyo.foodrecipe.model.Ingredient
+import com.swamyiphyo.foodrecipe.model.Instructions
 import com.swamyiphyo.foodrecipe.model.RecipeDetails
 import com.swamyiphyo.foodrecipe.model.SimilarRecipe
+import com.swamyiphyo.foodrecipe.model.Step
 
-class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, SimilarRecipesListener{
+class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, SimilarRecipesListener, InstructionListener{
+    //main
     private lateinit var binding: ActivityRecipeDetailBinding
-    private lateinit var ingredientsBinding: LayoutMealIngredientsBinding
-    private lateinit var mainAdapter: BaseAdapter<ExtendedIngredient>
+    //similar
     private lateinit var similarBinding : LayoutMealSimilarBinding
     private lateinit var similarAdapter : BaseAdapter<SimilarRecipe>
+    //instruction
+    private lateinit var instructionBinding : LayoutInstructionListsBinding
+    private lateinit var instructionAdapter : BaseAdapter<Instructions>
+    //steps
+    private lateinit var stepBinding : LayoutStepsListBinding
+    private lateinit var stepAdapter : BaseAdapter<Step>
+    //equipment
+    private lateinit var itemsBinding : LayoutStepItemsListBinding
+    private lateinit var equipmentAdapter : BaseAdapter<Equipment>
+    //ingredient
+    private lateinit var ingredientAdapter : BaseAdapter<Ingredient>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +57,7 @@ class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, 
         if (recipeId != null) {
             RequestManager.getInstance().getRecipeDetail(this, this, recipeId)
             RequestManager.getInstance().getSimilarRecipes(this, this, recipeId)
+            RequestManager.getInstance().getRecipeInstruction(this, this, recipeId)
         }
     }
 
@@ -53,29 +71,6 @@ class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, 
         binding.textViewRecipeSource.text = obj.sourceName
         binding.textViewMealSummary.text = obj.summary
         Picasso.get().load(obj.image).into(binding.imageViewRecipeImage)
-    }
-
-    override fun setUpRecyclerViewForIngredients(objList: List<ExtendedIngredient>) {
-        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        BaseAdapter(R.layout.layout_meal_ingredients, objList, false) { _, data, view ->
-            ingredientsBinding = LayoutMealIngredientsBinding.bind(view)
-
-            ingredientsBinding.ingreName.text = data.name
-            ingredientsBinding.ingreName.isSelected = true
-            ingredientsBinding.ingreQuality.text = data.original
-            ingredientsBinding.ingreQuality.isSelected = true
-            Picasso.get().load("https://spoonacular.com/cdn/ingredients_100x100/" + data.image).into(ingredientsBinding.ingreImage)
-
-            val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
-            view.animation = animation
-        }.also { mainAdapter = it }
-
-        binding.RVIngredients.apply {
-            layoutManager = linearLayoutManager
-            setHasFixedSize(true)
-            adapter = mainAdapter
-        }
     }
 
     override fun setUpUIForSimilarRecipes(objList: ArrayList<SimilarRecipe>) {
@@ -117,5 +112,86 @@ class RecipeDetailActivity : AppCompatActivity(), RecipeDetailResponseListener, 
             textSize = 22F
         }
 
+    }
+
+    override fun setUpRVForInstructions(objList: ArrayList<Instructions>) {
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        BaseAdapter(R.layout.layout_instruction_lists, objList, false){
+            _, data, view ->
+
+            instructionBinding = LayoutInstructionListsBinding.bind(view)
+
+            setUpRVForSteps(data.steps as ArrayList<Step>, instructionBinding)
+
+        }.also { instructionAdapter = it }
+
+        binding.RVMealInstructions.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            adapter = instructionAdapter
+        }
+    }
+
+    override fun setUpRVForEquipment(objList: ArrayList<Equipment>, parent : LayoutStepsListBinding) {
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        BaseAdapter(R.layout.layout_step_items_list, objList, false){
+            _, data, view ->
+
+            itemsBinding = LayoutStepItemsListBinding.bind(view)
+
+            itemsBinding.textViewInstructionsStepName.text = data.name
+            itemsBinding.textViewInstructionsStepName.isSelected = true
+            Picasso.get().load("https://spoonacular.com/cdn/equipment_100x100/" + data.image).into(itemsBinding.imageViewInstructionsStepItems)
+        }.also { equipmentAdapter = it }
+        parent.RVInstructionsEquipments.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            adapter = equipmentAdapter
+        }
+    }
+
+    override fun setUpRVForIngredients(objList: ArrayList<Ingredient>, parent : LayoutStepsListBinding) {
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        BaseAdapter(R.layout.layout_step_items_list, objList, false){
+            _, data, view ->
+
+            itemsBinding = LayoutStepItemsListBinding.bind(view)
+
+            itemsBinding.textViewInstructionsStepName.text = data.name
+            itemsBinding.textViewInstructionsStepName.isSelected = true
+            Picasso.get().load("https://spoonacular.com/cdn/ingredients_100x100/${data.image}").into(itemsBinding.imageViewInstructionsStepItems)
+        }.also { ingredientAdapter = it }
+
+        parent.RVInstructionsIngredients.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            adapter = ingredientAdapter
+        }
+    }
+
+    override fun setUpRVForSteps(objList: ArrayList<Step>, parent: LayoutInstructionListsBinding) {
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        BaseAdapter(R.layout.layout_steps_list, objList, false){
+            _, data, view ->
+
+            stepBinding = LayoutStepsListBinding.bind(view)
+
+            stepBinding.textViewInstructionsStepTitle.text = data.step
+            stepBinding.textViewInstructionsStepNumber.text = data.number.toString()
+
+            setUpRVForEquipment(data.equipment as ArrayList<Equipment>, stepBinding)
+            setUpRVForIngredients(data.ingredients as ArrayList<Ingredient>, stepBinding)
+
+        }.also { stepAdapter = it }
+
+        parent.RVInstructionsSteps.apply {
+            layoutManager = linearLayoutManager
+            setHasFixedSize(true)
+            adapter = stepAdapter
+        }
     }
 }

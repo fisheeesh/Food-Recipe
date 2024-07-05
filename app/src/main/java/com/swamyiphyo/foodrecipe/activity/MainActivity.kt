@@ -86,7 +86,6 @@ class MainActivity : AppCompatActivity(), RndRecipeListener, SearchView.OnQueryT
              */
             layoutRecipesBinding.rndRecipes.setOnClickListener(){
                 val recipeId = data.id.toString()
-                Toast.makeText(this, recipeId, Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this@MainActivity, RecipeDetailActivity::class.java)
                     .putExtra("id", recipeId))
             }

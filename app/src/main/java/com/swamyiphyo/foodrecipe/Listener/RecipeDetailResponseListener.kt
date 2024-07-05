@@ -9,5 +9,4 @@ interface RecipeDetailResponseListener {
     fun showProgress()
     fun hideProgress()
     fun setUpUIForRecipeDetail(obj : RecipeDetails)
-    fun setUpRecyclerViewForIngredients(objList: List<ExtendedIngredient>)
 }

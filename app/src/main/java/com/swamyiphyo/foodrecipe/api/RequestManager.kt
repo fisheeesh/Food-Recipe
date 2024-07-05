@@ -3,6 +3,7 @@ package com.swamyiphyo.foodrecipe.api
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.swamyiphyo.foodrecipe.Listener.InstructionListener
 import com.swamyiphyo.foodrecipe.Listener.RndRecipeListener
 import com.swamyiphyo.foodrecipe.Listener.RecipeDetailResponseListener
 import com.swamyiphyo.foodrecipe.Listener.SimilarRecipesListener
@@ -87,7 +88,7 @@ class RequestManager private constructor(){
                     val response = p1.body()
                     resp.hideProgress()
                     resp.setUpUIForRecipeDetail(response!!)
-                    resp.setUpRecyclerViewForIngredients(response.extendedIngredients as List<ExtendedIngredient>)
+//                    resp.setUpRecyclerViewForIngredients(response.extendedIngredients as List<ExtendedIngredient>)
                 }
                 else{
                     resp.showProgress()
@@ -108,6 +109,7 @@ class RequestManager private constructor(){
             override fun onResponse(p0: Call<List<SimilarRecipe>>, p1: Response<List<SimilarRecipe>>) {
                 if(p1.isSuccessful){
                     val response = p1.body()
+                    sim.hideProgress()
                     val objList = response as ArrayList<SimilarRecipe>
                     if(objList.isEmpty()){
                         sim.showNoSimilar()
@@ -117,12 +119,34 @@ class RequestManager private constructor(){
                     }
                 }
                 else{
+                    sim.showProgress()
                     Log.d("Similar", "onResponse: ${p1.errorBody()}")
                 }
             }
 
             override fun onFailure(p0: Call<List<SimilarRecipe>>, p1: Throwable) {
+                sim.showProgress()
                 Log.d("Similar Fail", "onFailure: ${p1.message}")
+            }
+
+        })
+    }
+    fun getRecipeInstruction(context : Context, obj : InstructionListener, id : Int){
+        val api = ApiClient.apiService.getRecipeInstruction(id, context.getString(R.string.api_key))
+        api.enqueue(object : Callback<List<Instructions>>{
+            override fun onResponse(p0: Call<List<Instructions>>, p1: Response<List<Instructions>>) {
+                if(p1.isSuccessful){
+                    val response = p1.body()
+                    obj.hideProgress()
+                    val objList = response as ArrayList<Instructions>
+                    obj.setUpRVForInstructions(objList)
+                }
+                else{
+                    Log.d("TAG", "onResponse: ${p1.errorBody()}")
+                }
+            }
+            override fun onFailure(p0: Call<List<Instructions>>, p1: Throwable) {
+                Log.d("TAG", "onFailure: ${p1.message}")
             }
 
         })

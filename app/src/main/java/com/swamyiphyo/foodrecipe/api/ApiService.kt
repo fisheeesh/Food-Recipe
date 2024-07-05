@@ -39,4 +39,10 @@ interface ApiService {
         @Query("apiKey") apiKey : String,
         @Query("number") number : String
     ) : Call<List<SimilarRecipe>>
+
+    @GET("recipes/{id}/analyzedInstructions")
+    fun getRecipeInstruction(
+        @Path("id") id : Int,
+        @Query("apiKey") apiKey : String
+    ) : Call<List<Instructions>>
 }
